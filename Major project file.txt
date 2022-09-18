@@ -1,0 +1,54 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import numpy as np
+from sklearn.utils import shuffle
+train=pd.read_csv("multiData.csv")
+#train=pd.read_csv("faultData.csv")
+train.head()
+train = shuffle(train)
+train.columns
+y_train=train['label2']
+#y_train=train['label1']
+train=train.drop(['label2'],axis=1)
+#train=train.drop(['label1'],axis=1)
+X_train, X_test, y_train, y_test = train_test_split(train, y_train, test_size=0.05, random_state=42)
+X_train.info()
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.metrics import accuracy_score
+ada= AdaBoostClassifier()
+ada.fit(X_train,y_train)
+pred=ada.predict(X_test)
+print("Adaboost Accuracy Score with Test Data")
+accuracy_score(y_test, pred)*100
+ada.score(X_train,y_train)*100
+# import pickle
+# filename = 'rf_model.sav'
+# pickle.dump(DecisionTree, open(filename, 'wb'))
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+DecisionTree= DecisionTreeClassifier()
+DecisionTree.fit(X_train,y_train)
+
+pred=DecisionTree.predict(X_test)
+print(pred)
+print(X_test[0:5])
+print("DecisionTreeClassifier Accuracy Score with Test Data")
+accuracy_score(y_test, pred)*100
+DecisionTree.score(X_train,y_train)
+from sklearn.linear_model import LogisticRegression
+logreg= LogisticRegression()
+
+logreg.fit(X_train,y_train)
+pred=logreg.predict(X_test)
+print("LogisticRegression Accuracy Score with Test Data")
+accuracy_score(y_test, pred)
+logreg.score(X_train,y_train)
+from sklearn.ensemble import RandomForestClassifier
+Decisionforest= RandomForestClassifier()
+Decisionforest.fit(X_train,y_train)
+pred=Decisionforest.predict(X_test)
+print(pred)
+print(X_test[0:20])
+print("RandomForestClassifier Accuracy Score with Test Data")
+accuracy_score(y_test, pred)*100
+Decisionforest.score(X_train,y_train)
